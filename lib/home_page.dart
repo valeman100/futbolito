@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'database_connection.dart';
+
 class HomePage extends StatefulWidget {
   final String selectedName;
 
@@ -12,7 +14,34 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   String buttonName = 'Click Me';
   int currentIndex = 0;
-  bool _isClicked = false;
+
+  late List<dynamic> _names = [];
+  late List<dynamic> _surnames = [];
+  late List<dynamic> _score = [];
+  String _selectedName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchNames();
+  }
+
+  void _fetchNames() async {
+    List<dynamic> names = await DatabaseHelper.getUsers();
+    names = names.map((name) => name['name']).toList();
+
+    List<dynamic> surnames = await DatabaseHelper.getUsers();
+    surnames = surnames.map((surname) => surname['surname']).toList();
+
+    List<dynamic> score = await DatabaseHelper.getUsers();
+    score = score.map((score) => score['score']).toList();
+
+    setState(() {
+      _names = names;
+      _surnames = surnames;
+      _score = score;
+    });
+  }
 
   String get selectedName => widget.selectedName;
 
@@ -20,61 +49,28 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Futbolito Turnament'),
+        title: Text('Ranking for $selectedName'),
         backgroundColor: Colors.indigo[800],
       ),
-      body: Center(
-        child: currentIndex == 0
-            ? Container(
-                width: double.infinity,
-                height: double.infinity,
-                color: Colors.redAccent,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.black,
-                        backgroundColor: Colors.amber,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          buttonName = '$selectedName Clicked';
-                        });
-                      },
-                      child: Text(buttonName),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          buttonName = 'Click Me';
-                        });
-                      },
-                      child: const Text('Reset'),
-                    ),
-                    Text(buttonName),
-                  ],
-                ))
-            : GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _isClicked = !_isClicked;
-                  });
-                },
-                child: Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    color: Colors.blueAccent,
-                    child: Center(
-                      child: Form(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(selectedName),
-                          )
-                        ),
-                      ),
-                    )),
+      body: ListView.builder(
+        itemCount: _names.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            title: Text('${_names[index]} ${_surnames[index]} ${_score[index]}'),
+            onTap: () {
+              setState(() {
+                _selectedName = _names[index].toString();
+              });
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      HomePage(selectedName: _selectedName), //
+                ),
+              );
+            },
+          );
+        },
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

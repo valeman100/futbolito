@@ -5,29 +5,34 @@ import 'home_page.dart';
 import 'home_page.dart';
 import 'main.dart';
 
-//import 'package:your_database_library/database.dart';
-//import 'package:your_app/home_page.dart';
-
 class NameListPage extends StatefulWidget {
+  const NameListPage({super.key});
+
   @override
   _NameListPageState createState() => _NameListPageState();
 }
 
 class _NameListPageState extends State<NameListPage> {
-  List<String> _names = ['a', 'b']; // stores the list of names
-  String _selectedName = ''; // stores the selected name
+  late List<dynamic> _names = [];
+  late List<dynamic> _surnames = [];
+  String _selectedName = '';
 
   @override
   void initState() {
     super.initState();
-    _fetchNames(); // fetches the list of names from the database
+    _fetchNames();
   }
 
   void _fetchNames() async {
-    List<String> names = await DatabaseHelper.getNames();
+    List<dynamic> names = await DatabaseHelper.getNames();
+    names = names.map((name) => name['name']).toList();
+
+    List<dynamic> surnames = await DatabaseHelper.getNames();
+    surnames = surnames.map((surname) => surname['surname']).toList();
 
     setState(() {
       _names = names;
+      _surnames = surnames;
     });
   }
 
@@ -35,16 +40,16 @@ class _NameListPageState extends State<NameListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Name List'),
+        title: const Text('Participants'),
       ),
       body: ListView.builder(
         itemCount: _names.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text(_names[index]),
+            title: Text('${_names[index]} ${_surnames[index]}'),
             onTap: () {
               setState(() {
-                _selectedName = _names[index];
+                _selectedName = _names[index].toString();
               });
               Navigator.push(
                 context,
