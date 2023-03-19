@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart';
+import 'ranking_page.dart';
 import 'first_page.dart';
 
 void main() {
@@ -22,7 +22,7 @@ class _MyAppState extends State<MyApp> {
       // displays the name list page when the app is opened
       routes: {
         // adds a route to the home page
-        '/home': (context) => const HomePage(selectedName: '',),
+        '/home': (context) => const RankingPage(selectedName: '',),
       },
     );
   }

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-
 import 'database_connection.dart';
 
-class HomePage extends StatefulWidget {
+class RankingPage extends StatefulWidget {
   final String selectedName;
 
-  const HomePage({Key? key, required this.selectedName}) : super(key: key);
+  const RankingPage({Key? key, required this.selectedName}) : super(key: key);
 
   @override
   _HomePage createState() => _HomePage();
 }
 
-class _HomePage extends State<HomePage> {
+class _HomePage extends State<RankingPage> {
   String buttonName = 'Click Me';
   int currentIndex = 0;
 
@@ -27,20 +26,15 @@ class _HomePage extends State<HomePage> {
   }
 
   void _fetchNames() async {
-    List<dynamic> names = await DatabaseHelper.getUsers();
-    names = names.map((name) => name['name']).toList();
+    List<dynamic> results = await DatabaseHelper.getUsers();
 
-    List<dynamic> surnames = await DatabaseHelper.getUsers();
-    surnames = surnames.map((surname) => surname['surname']).toList();
-
-    List<dynamic> score = await DatabaseHelper.getUsers();
-    score = score.map((score) => score['score']).toList();
-
-    setState(() {
-      _names = names;
-      _surnames = surnames;
-      _score = score;
-    });
+    setState(
+      () {
+        _names = results.map((results) => results['name']).toList();
+        _surnames = results.map((results) => results['surname']).toList();
+        _score = results.map((results) => results['score']).toList();
+      },
+    );
   }
 
   String get selectedName => widget.selectedName;
@@ -56,7 +50,9 @@ class _HomePage extends State<HomePage> {
         itemCount: _names.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text('${_names[index]} ${_surnames[index]} ${_score[index]}'),
+            title:
+                Text('${_names[index]} ${_surnames[index]} ${_score[index]}'),
+            tileColor: Colors.green[_score[index]*10],
             onTap: () {
               setState(() {
                 _selectedName = _names[index].toString();
@@ -65,7 +61,7 @@ class _HomePage extends State<HomePage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      HomePage(selectedName: _selectedName), //
+                      RankingPage(selectedName: _selectedName), //
                 ),
               );
             },

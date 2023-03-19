@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'database_connection.dart';
-import 'home_page.dart';
-
-import 'home_page.dart';
-import 'main.dart';
+import 'ranking_page.dart';
 
 class NameListPage extends StatefulWidget {
   const NameListPage({super.key});
@@ -41,6 +38,7 @@ class _NameListPageState extends State<NameListPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Participants'),
+        backgroundColor: Colors.indigo[800],
       ),
       body: ListView.builder(
         itemCount: _names.length,
@@ -55,7 +53,7 @@ class _NameListPageState extends State<NameListPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      HomePage(selectedName: _selectedName), //
+                      RankingPage(selectedName: _selectedName), //
                 ),
               );
             },
