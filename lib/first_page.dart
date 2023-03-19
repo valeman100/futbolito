@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'database_connection.dart';
+import 'home_page.dart';
 
 import 'home_page.dart';
 import 'main.dart';
@@ -18,16 +20,16 @@ class _NameListPageState extends State<NameListPage> {
   @override
   void initState() {
     super.initState();
-    //_fetchNames(); // fetches the list of names from the database
+    _fetchNames(); // fetches the list of names from the database
   }
 
-  // void _fetchNames() async {
-  //   // fetches the list of names from the database
-  //   List<String> names = await YourDatabaseLibrary.fetchNames();
-  //   setState(() {
-  //     _names = names;
-  //   });
-  // }
+  void _fetchNames() async {
+    List<String> names = await DatabaseHelper.getNames();
+
+    setState(() {
+      _names = names;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,8 @@ class _NameListPageState extends State<NameListPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage(selectedName: _selectedName), //
+                  builder: (context) =>
+                      HomePage(selectedName: _selectedName), //
                 ),
               );
             },
