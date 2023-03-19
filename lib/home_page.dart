@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key, selectedName}) : super(key: key);
+  final String selectedName;
+  const HomePage({Key? key, required this.selectedName}) : super(key: key);
   @override
   _HomePage createState() => _HomePage();
 }
@@ -11,6 +12,8 @@ class _HomePage extends State<HomePage> {
   String buttonName = 'Click Me';
   int currentIndex = 0;
   bool _isClicked = false;
+
+  String get selectedName => widget.selectedName;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +39,7 @@ class _HomePage extends State<HomePage> {
                   ),
                   onPressed: () {
                     setState(() {
-                      buttonName = 'Clicked';
+                      buttonName = '$selectedName Clicked';
                     });
                   },
                   child: Text(buttonName),
@@ -60,7 +63,7 @@ class _HomePage extends State<HomePage> {
             },
             child: _isClicked
                 ? Image.asset('images/download.png')
-                : Image.asset('images/User Cover.png')),
+                : Image.asset('images/first.png')),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -71,7 +74,7 @@ class _HomePage extends State<HomePage> {
             label: 'Ranking',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.sports_soccer_sharp),
             label: 'Matches',
           ),
         ],

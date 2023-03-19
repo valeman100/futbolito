@@ -22,7 +22,7 @@ class _MyAppState extends State<MyApp> {
       // displays the name list page when the app is opened
       routes: {
         // adds a route to the home page
-        '/home': (context) => HomePage(),
+        '/home': (context) => const HomePage(selectedName: '',),
       },
     );
   }
