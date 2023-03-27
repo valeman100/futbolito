@@ -32,4 +32,16 @@ class DatabaseHelper {
     await conn.close();
     return results.map((result) => result).toList();
   }
+
+  static Future<List<Object>> getMatches(selectedName) async {
+    String _selectedName = selectedName;
+    final conn = await DatabaseConnection.getConnection();
+    final results = await conn.query(
+        'SELECT user1, user2, user3, user4, score1, score2'
+        ' FROM matches'
+        ' WHERE user1 = ? OR user2 = ? OR user3 = ? OR user4 = ?',
+        [_selectedName, _selectedName, _selectedName, _selectedName]);
+    await conn.close();
+    return results.map((result) => result).toList();
+  }
 }

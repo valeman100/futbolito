@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'database_connection.dart';
+import 'matches_page.dart';
 
 class RankingPage extends StatefulWidget {
   final String selectedName;
@@ -85,6 +86,14 @@ class _HomePage extends State<RankingPage> {
           setState(() {
             currentIndex = index;
           });
+          if (currentIndex == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MatchesPage(selectedName: selectedName),
+              ),
+            );
+          }
         },
       ),
     );
