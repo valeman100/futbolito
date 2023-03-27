@@ -71,7 +71,6 @@ class _HomePage extends State<RankingPage> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: const [
-          /**/
           BottomNavigationBarItem(
             icon: Icon(Icons.star),
             label: 'Ranking',
